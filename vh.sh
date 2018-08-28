@@ -1,0 +1,44 @@
+printf 'Enter a domain name: \n'
+read domain
+
+mkdir -p /etc/ssl/"$domain"
+cd /etc/ssl/"$domain"
+sudo openssl genrsa -des3 -out "$domain".key 1024
+sudo openssl req -new -key "$domain".key -out "$domain".csr
+sudo cp "$domain".key "$domain".key.org
+sudo openssl rsa -in "$domain".key.org -out "$domain".key
+sudo openssl x509 -req -days 365 -in "$domain".csr -signkey "$domain".key -out "$domain".crt
+
+sudo mkdir -p /var/www/"$domain"/
+sudo chown -R igor /var/www/"$domain"/
+
+sudo touch /etc/nginx/sites-available/"$domain"
+sudo sh -c "echo '
+server {
+    listen 80;
+    listen 443 ssl;
+
+    server_name $domain;
+
+    root /var/www/$domain;
+    index index.php index.html index.htm;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+    }
+
+    ssl on;
+    ssl_certificate /etc/ssl/$domain/$domain.crt;
+    ssl_certificate_key /etc/ssl/$domain/$domain.key;
+}
+' >> /etc/nginx/sites-available/$domain"
+
+sudo ln -s /etc/nginx/sites-available/"$domain" /etc/nginx/sites-enabled/"$domain"
+sudo sh -c "echo '127.0.0.1 $domain' >> /etc/hosts"
+
+sudo service nginx restart
