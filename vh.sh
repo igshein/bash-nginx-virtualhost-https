@@ -24,7 +24,11 @@ server {
     index index.php index.html index.htm;
 
     location / {
-        try_files \$uri \$uri/ =404;
+        # For MVC
+        try_files $uri $uri/ /index.php?$query_string;
+
+        # For Simple
+        # try_files \$uri \$uri/ =404;
     }
 
     location ~ \.php$ {
