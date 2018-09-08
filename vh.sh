@@ -1,8 +1,8 @@
 printf 'Enter a domain name: \n'
 read domain
 
-mkdir -p /etc/ssl/"$domain"
-cd /etc/ssl/"$domain"
+mkdir -p /home/$USER/ssl/cert/"$domain"
+cd /home/$USER/ssl/cert/"$domain"
 sudo openssl genrsa -des3 -out "$domain".key 1024
 sudo openssl req -new -key "$domain".key -out "$domain".csr
 sudo cp "$domain".key "$domain".key.org
@@ -25,7 +25,7 @@ server {
 
     location / {
         # For MVC
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files \$uri \$uri/ /index.php?$query_string;
 
         # For Simple
         # try_files \$uri \$uri/ =404;
@@ -37,8 +37,8 @@ server {
     }
 
     ssl on;
-    ssl_certificate /etc/ssl/$domain/$domain.crt;
-    ssl_certificate_key /etc/ssl/$domain/$domain.key;
+    ssl_certificate /home/$USER/ssl/cert/$domain/$domain.crt;
+    ssl_certificate_key /home/$USER/ssl/cert/$domain/$domain.key;
 }
 ' >> /etc/nginx/sites-available/$domain"
 
