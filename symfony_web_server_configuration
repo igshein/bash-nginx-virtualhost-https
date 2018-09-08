@@ -1,0 +1,32 @@
+server {
+    listen 80;
+    listen 443 ssl;
+
+    server_name symfony.lh;
+    root /var/www/symfony.lh/web;
+
+    location / {
+        try_files $uri /app.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+    }
+
+    ssl on;
+    ssl_certificate /home/$USER/ssl/cert/symfony.lh/symfony-blog.lh.crt;
+    ssl_certificate_key /home/$USER/ssl/cert/symfony.lh/symfony-blog.lh.key;
+
+    location ~ \.php$ {
+        return 404;
+    }
+
+    error_log /var/log/nginx/project_error.log;
+    access_log /var/log/nginx/project_access.log;
+}
