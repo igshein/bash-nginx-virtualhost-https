@@ -36,7 +36,6 @@ server {
         fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
     }
 
-    ssl on;
     ssl_certificate /home/$USER/ssl/cert/$domain/$domain.crt;
     ssl_certificate_key /home/$USER/ssl/cert/$domain/$domain.key;
 }
