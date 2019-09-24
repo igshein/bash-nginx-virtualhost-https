@@ -1,3 +1,5 @@
+#!/bin/bash
+
 printf 'Enter a domain name: \n'
 read domain
 
