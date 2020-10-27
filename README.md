@@ -7,10 +7,7 @@ This script creates https virtualhost for Nginx.
 
 Installation and run (in console Linux):
 
-git clone https://github.com/igshein/bash-nginx-virtualhost-https.git
-
-cd bash-nginx-virtualhost-https
-
-sh vh.sh
-
-P.S. DocumentRoot default will be: "/var/www/$your_domain"
+1) git clone https://github.com/igshein/bash-nginx-virtualhost-https.git
+2) cd bash-nginx-virtualhost-https
+3) sh vh.sh
+4) P.S. DocumentRoot default will be: "/var/www/$your_domain"
