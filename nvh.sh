@@ -12,7 +12,7 @@ sudo openssl rsa -in "$domain".key.org -out "$domain".key
 sudo openssl x509 -req -days 365 -in "$domain".csr -signkey "$domain".key -out "$domain".crt
 
 sudo mkdir -p /var/www/"$domain"/
-sudo chown -R igor /var/www/"$domain"/
+sudo chown -R debian /var/www/"$domain"/
 
 sudo touch /etc/nginx/sites-available/"$domain"
 sudo sh -c "echo '
